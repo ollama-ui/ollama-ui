@@ -2,28 +2,23 @@
 const URL = "http://localhost:11434/api/generate";
 
 // Function to send a POST request to the API
-function postRequest(data) {
+function postRequest(data, signal) {
   return fetch(URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
+    signal: signal
   });
 }
 
 // Function to stream the response from the server
-async function getResponse(response, callback, stopper) {
+async function getResponse(response, callback) {
   const reader = response.body.getReader();
   let partialLine = '';
 
   while (true) {
-    // if we have an interrupt, stop reading the stream and cancel it
-    if (stopper.interrupt === true) {
-      reader.cancel()
-      break;
-    }
-
     const { done, value } = await reader.read();
     if (done) {
       break;
