@@ -39,6 +39,7 @@ async function submitRequest() {
   // Create response container
   let responseDiv = document.createElement('div');
   responseDiv.className = 'response-message mb-2 text-start';
+  responseDiv.innerHTML = '<div class="spinner-border text-light" role="status" id="loading-spinner"><span class="visually-hidden">Loading...</span></div>'
   chatHistory.appendChild(responseDiv);
   
   postRequest(data)
