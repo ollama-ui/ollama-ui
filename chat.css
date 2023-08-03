@@ -15,10 +15,11 @@ body {
   /* Style for received messages */
   .response-message {
     background-color: rgb(62, 62, 62);
-	color: white;
+	  color: white;
     padding: 10px;
     border-radius: 10px;
-    
+    padding-right: 20px;
+    position: relative;
   }
   
   /* Style for the chat container */
@@ -31,3 +32,11 @@ body {
   #chat-history {
     overflow-y: auto;
   }
+
+
+.copy-button {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  margin: 0 5px 5px 0;
+}
