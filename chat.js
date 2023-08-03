@@ -29,7 +29,7 @@ async function submitRequest() {
           responseDiv.hidden_text = ""
         }
         responseDiv.hidden_text += word
-        responseDiv.innerHTML = marked.parse(responseDiv.hidden_text); // Append word to response container
+        responseDiv.innerHTML = DOMPurify.sanitize(marked.parse(responseDiv.hidden_text)); // Append word to response container
       }
     }))
     .catch(error => {
