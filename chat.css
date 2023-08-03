@@ -23,7 +23,7 @@ body {
   
   /* Style for the chat container */
   #chat-container {
-    
+    display: none;
     margin: 0 auto;
     overflow: auto;
   }
