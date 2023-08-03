@@ -23,6 +23,8 @@ function getSelectedModel() {
 
 // Function to handle the user input and call the API functions
 async function submitRequest() {
+  document.getElementById('chat-container').style.display = 'block';
+
   const input = document.getElementById('user-input').value;
   const selectedModel = getSelectedModel();
   const data = { model: selectedModel, prompt: input };
