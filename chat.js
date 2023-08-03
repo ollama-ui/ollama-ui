@@ -27,7 +27,8 @@ async function submitRequest() {
 
   const input = document.getElementById('user-input').value;
   const selectedModel = getSelectedModel();
-  const data = { model: selectedModel, prompt: input };
+  const context = document.getElementById('chat-history').context;
+  const data = { model: selectedModel, prompt: input, context: context };
 
   // Create user message element and append to chat history
   let chatHistory = document.getElementById('chat-history');
@@ -43,12 +44,16 @@ async function submitRequest() {
   chatHistory.appendChild(responseDiv);
   
   postRequest(data)
-    .then(response => getResponse(response, word => {
+    .then(response => getResponse(response, parsedResponse => {
+      let word = parsedResponse.response;
+      if (parsedResponse.done){
+        chatHistory.context = parsedResponse.context;
+      }
       if (word != undefined) {
         if (responseDiv.hidden_text == undefined){
-          responseDiv.hidden_text = ""
+          responseDiv.hidden_text = "";
         }
-        responseDiv.hidden_text += word
+        responseDiv.hidden_text += word;
         responseDiv.innerHTML = marked.parse(responseDiv.hidden_text); // Append word to response container
       }
     }))

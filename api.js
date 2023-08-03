@@ -30,14 +30,14 @@ async function getResponse(response, callback) {
     for (const line of lines) {
       if (line.trim() === '') continue;
       const parsedResponse = JSON.parse(line);
-      callback(parsedResponse.response); // Process each response word
+      callback(parsedResponse); // Process each response word
     }
   }
 
   // Handle any remaining line
   if (partialLine.trim() !== '') {
     const parsedResponse = JSON.parse(partialLine);
-    callback(parsedResponse.response);
+    callback(parsedResponse);
   }
 }
 
