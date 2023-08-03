@@ -57,9 +57,9 @@ async function submitRequest() {
   document.getElementById('user-input').value = '';
 }
 
-// Event listener for Ctrl + Enter
+// Event listener for Ctrl + Enter or CMD + Enter
 document.getElementById('user-input').addEventListener('keydown', function (e) {
-  if (e.ctrlKey && e.key === 'Enter') {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
     submitRequest();
   }
 });
