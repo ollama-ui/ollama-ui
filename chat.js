@@ -52,37 +52,63 @@ async function submitRequest() {
   // Create response container
   let responseDiv = document.createElement('div');
   responseDiv.className = 'response-message mb-2 text-start';
-  responseDiv.innerHTML = '<div class="spinner-border text-light" role="status" id="loading-spinner"><span class="visually-hidden">Loading...</span></div>'
+  responseDiv.style.minHeight = '3em'; // make sure div does not shrink if we cancel the request when no text has been generated yet
+  spinner = document.createElement('div');
+  spinner.className = 'spinner-border text-light';
+  spinner.setAttribute('role', 'status');
+  responseDiv.appendChild(spinner);
   chatHistory.appendChild(responseDiv);
+
+  // create button to stop text generation
+  let interrupt = new AbortController();
+  let stopButton = document.createElement('button');
+  stopButton.className = 'btn btn-danger';
+  stopButton.innerHTML = 'Stop';
+  stopButton.onclick = () => {
+    interrupt.abort('Stop button pressed');
+  }
+  // add button after responseDiv
+  responseDiv.insertAdjacentElement('afterend', stopButton);
   
-  postRequest(data)
-    .then(response => getResponse(response, parsedResponse => {
-      let word = parsedResponse.response;
-      if (parsedResponse.done){
-        chatHistory.context = parsedResponse.context;
-        // Copy button
-        let copyButton = document.createElement('button');
-        copyButton.className = 'btn btn-secondary copy-button';
-        copyButton.innerHTML = clipboardIcon;
-        copyButton.onclick = () => {
-          navigator.clipboard.writeText(responseDiv.hidden_text).then(() => {
-            console.log('Text copied to clipboard');
-          }).catch(err => {
-            console.error('Failed to copy text:', err);
-    });
-  };
-  responseDiv.appendChild(copyButton);
-      }
-      if (word != undefined) {
-        if (responseDiv.hidden_text == undefined){
-          responseDiv.hidden_text = "";
+  postRequest(data, interrupt.signal)
+    .then(async response => {
+      await getResponse(response, parsedResponse => {
+        let word = parsedResponse.response;
+        if (parsedResponse.done) {
+          chatHistory.context = parsedResponse.context;
+          // Copy button
+          let copyButton = document.createElement('button');
+          copyButton.className = 'btn btn-secondary copy-button';
+          copyButton.innerHTML = clipboardIcon;
+          copyButton.onclick = () => {
+            navigator.clipboard.writeText(responseDiv.hidden_text).then(() => {
+              console.log('Text copied to clipboard');
+            }).catch(err => {
+              console.error('Failed to copy text:', err);
+            });
+          };
+          responseDiv.appendChild(copyButton);
         }
-        responseDiv.hidden_text += word
-        responseDiv.innerHTML = DOMPurify.sanitize(marked.parse(responseDiv.hidden_text)); // Append word to response container
-      }
-    }))
+        // add word to response
+        if (word != undefined) {
+          if (responseDiv.hidden_text == undefined){
+            responseDiv.hidden_text = "";
+          }
+          responseDiv.hidden_text += word;
+          responseDiv.innerHTML = DOMPurify.sanitize(marked.parse(responseDiv.hidden_text)); // Append word to response container
+        }
+      });
+    })
+    .then(() => {
+      stopButton.remove(); // Remove stop button from DOM now that all text has been generated
+      spinner.remove();
+    }) 
     .catch(error => {
-      console.error(error);
+      if (error !== 'Stop button pressed') {
+        console.error(error);
+      }
+      stopButton.remove();
+      spinner.remove();
     });
 
   // Clear user input
