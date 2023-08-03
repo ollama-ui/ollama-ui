@@ -47,25 +47,45 @@ async function submitRequest() {
   // Create response container
   let responseDiv = document.createElement('div');
   responseDiv.className = 'response-message mb-2 text-start';
-  responseDiv.innerHTML = '<div class="spinner-border text-light" role="status" id="loading-spinner"><span class="visually-hidden">Loading...</span></div>'
+  spinner = document.createElement('div');
+  spinner.className = 'spinner-border text-light'
+  spinner.role = "status"
+  spinner.id = "loading-spinner"
+  responseDiv.appendChild(spinner);
   chatHistory.appendChild(responseDiv);
+
+  // create button to stop text generation
+  let stopButton = document.createElement('button');
+  stopButton.className = 'danger';
+  stopButton.innerHTML = 'Stop';
+  stopButton.onclick = () => {
+    stopButton.interrupt = true;
+  }
+  responseDiv.insertAdjacentElement('afterend', stopButton);
   
   postRequest(data)
-    .then(response => getResponse(response, parsedResponse => {
-      let word = parsedResponse.response;
-      if (parsedResponse.done){
-        chatHistory.context = parsedResponse.context;
-      }
-      if (word != undefined) {
-        if (responseDiv.hidden_text == undefined){
-          responseDiv.hidden_text = "";
+    .then(async response => {
+      await getResponse(response, parsedResponse => {
+        let word = parsedResponse.response;
+        if (parsedResponse.done){
+          chatHistory.context = parsedResponse.context;
         }
-        responseDiv.hidden_text += word
-        responseDiv.innerHTML = DOMPurify.sanitize(marked.parse(responseDiv.hidden_text)); // Append word to response container
-      }
-    }))
+        if (word != undefined) {
+          if (responseDiv.hidden_text == undefined){
+            responseDiv.hidden_text = "";
+          }
+          responseDiv.hidden_text += word;
+          responseDiv.innerHTML = DOMPurify.sanitize(marked.parse(responseDiv.hidden_text)); // Append word to response container
+        }
+      }, stopButton)
+    })
+    .then(() => {
+      stopButton.remove(); // Remove stop button from DOM now that all text has been generated
+      spinner.remove();
+    }) 
     .catch(error => {
       console.error(error);
+      stopButton.remove();
     });
 
   // Clear user input

@@ -13,11 +13,17 @@ function postRequest(data) {
 }
 
 // Function to stream the response from the server
-async function getResponse(response, callback) {
+async function getResponse(response, callback, stopper) {
   const reader = response.body.getReader();
   let partialLine = '';
 
   while (true) {
+    // if we have an interrupt, stop reading the stream and cancel it
+    if (stopper.interrupt === true) {
+      reader.cancel()
+      break;
+    }
+
     const { done, value } = await reader.read();
     if (done) {
       break;
