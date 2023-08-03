@@ -1,3 +1,10 @@
+// change settings of marked from default to remove deprecation warnings
+// see conversation here: https://github.com/markedjs/marked/issues/2793
+marked.use({
+  mangle: false,
+  headerIds: false
+});
+
 // Fetch available models and populate the dropdown
 async function populateModels() {
   try {
@@ -53,8 +60,8 @@ async function submitRequest() {
         if (responseDiv.hidden_text == undefined){
           responseDiv.hidden_text = "";
         }
-        responseDiv.hidden_text += word;
-        responseDiv.innerHTML = marked.parse(responseDiv.hidden_text); // Append word to response container
+        responseDiv.hidden_text += word
+        responseDiv.innerHTML = DOMPurify.sanitize(marked.parse(responseDiv.hidden_text)); // Append word to response container
       }
     }))
     .catch(error => {
