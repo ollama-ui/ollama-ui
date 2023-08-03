@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chat with Llama2</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/marked@6.0.0/marked.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="chat.css">
+</head>
+
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <div id="chat-container" class="card">
+            <div class="card-body">
+                <div id="chat-history"></div>
+            </div>
+        </div>
+        <div class="input-group mt-3" id="input-area">
+            <textarea class="form-control" id="user-input" placeholder="Type your question here..."></textarea>
+            <button class="btn btn-primary" onclick="submitRequest()">Send</button>
+        </div>
+    </div>
+    <script src="api.js"></script>
+    <script src="chat.js"></script>
+</body>
+
+</html>
