@@ -1,3 +1,10 @@
+// change settings of marked from default to remove deprecation warnings
+// see conversation here: https://github.com/markedjs/marked/issues/2793
+marked.use({
+  mangle: false,
+  headerIds: false
+});
+
 // Function to handle the user input and call the API functions
 async function submitRequest() {
   const input = document.getElementById('user-input').value;
