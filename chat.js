@@ -81,8 +81,3 @@ document.getElementById('user-input').addEventListener('keydown', function (e) {
 
 
 window.onload = populateModels;
-
-marked.use({
-  mangle: false,
-  headerIds: false
-});
