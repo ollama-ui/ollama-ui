@@ -33,14 +33,9 @@ function getSelectedModel() {
   return document.getElementById('model-select').value;
 }
 
-function scrollToBottom(ele) {
-  ele.scrollTop = ele.scrollHeight;
-}
-
 // Function to handle the user input and call the API functions
 async function submitRequest() {
-  const chatContainer = document.getElementById('chat-container')
-  chatContainer.style.display = 'block';
+  document.getElementById('chat-container').style.display = 'block';
 
   const input = document.getElementById('user-input').value;
   const selectedModel = getSelectedModel();
@@ -74,8 +69,12 @@ async function submitRequest() {
   }
   // add button after responseDiv
   responseDiv.insertAdjacentElement('afterend', stopButton);
-  // autoscroll
-  scrollToBottom(chatContainer);
+  // autoscroll when new line is added
+  const autoScroller = new ResizeObserver(() => {
+    stopButton.scrollIntoView({behavior: "smooth", block: "end"});
+  });
+  autoScroller.observe(responseDiv);
+
   
   postRequest(data, interrupt.signal)
     .then(async response => {
@@ -103,8 +102,6 @@ async function submitRequest() {
           }
           responseDiv.hidden_text += word;
           responseDiv.innerHTML = DOMPurify.sanitize(marked.parse(responseDiv.hidden_text)); // Append word to response container
-          // autoscrolls chat container
-          scrollToBottom(chatContainer);
         }
       });
     })
