@@ -66,15 +66,18 @@ async function submitRequest() {
   let stopButton = document.createElement('button');
   stopButton.className = 'btn btn-danger';
   stopButton.innerHTML = 'Stop';
-  stopButton.onclick = () => {
+  stopButton.onclick = (e) => {
+    e.preventDefault();
     interrupt.abort('Stop button pressed');
   }
-  // add button after chatContainer
-  const chatContainer = document.getElementById('chat-container')
-  chatContainer.insertAdjacentElement('afterend', stopButton);
+  // add button after sendButton
+  const sendButton = document.getElementById('send-button');
+  sendButton.insertAdjacentElement('afterend', stopButton);
+
+  const scrollWrapper = document.getElementById('scroll-wrapper');
   // autoscroll when new line is added
   const autoScroller = new ResizeObserver(() => {
-    chatHistory.scrollIntoView({behavior: "smooth", block: "end"});
+    scrollWrapper.scrollIntoView({behavior: "smooth", block: "end"});
   });
   autoScroller.observe(responseDiv);
 

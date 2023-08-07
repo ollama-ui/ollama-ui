@@ -29,16 +29,19 @@
                 <select class="form-select d-inline-block" id="model-select" style="width: auto;"></select>
             </div>
         </div>
-        <div id="chat-container" class="card">
-            <div class="card-body">
-                <div id="chat-history" class="py-2"></div>
+        <div id="scroll-wrapper">
+            <div id="chat-container" class="card">
+                <div class="card-body">
+                    <div id="chat-history"></div>
+                </div>
             </div>
         </div>
-        <div class="input-group mt-3" id="input-area">
-            <textarea class="form-control" id="user-input" placeholder="Type your question here..."></textarea>
-            <button id="send-button" class="btn btn-primary">Send</button>
-        </div>
     </div>
+    <div class="input-group p-3" id="input-area">
+        <textarea class="form-control" id="user-input" placeholder="Type your question here..."></textarea>
+        <button id="send-button" class="btn btn-primary">Send</button>
+    </div>
+
     <script src="api.js"></script>
     <script src="chat.js"></script>
 </body>
