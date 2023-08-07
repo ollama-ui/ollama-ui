@@ -10,6 +10,21 @@ marked.use({
   headerIds: false
 });
 
+/*
+takes in model as a string
+updates the query parameters of page url to include model name
+*/
+function updateModelInQueryString(model) {
+  // make sure browser supports features
+  if (window.history.replaceState && 'URLSearchParams' in window) {
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("model", model);
+    // replace current url without reload
+    const newPathWithQuery = `${window.location.pathname}?${searchParams.toString()}`
+    window.history.replaceState(null, '', newPathWithQuery);
+  }
+}
+ 
 // Fetch available models and populate the dropdown
 async function populateModels() {
   document.getElementById('send-button').addEventListener('click', submitRequest);
@@ -17,17 +32,37 @@ async function populateModels() {
   try {
     const response = await fetch("http://localhost:11434/api/tags");
     const data = await response.json();
+
     const selectElement = document.getElementById('model-select');
 
-    data.models.forEach(model => {
+    // set up handler for selection
+    selectElement.onchange = (() => updateModelInQueryString(selectElement.value));
+
+    data.models.forEach((model) => {
       const option = document.createElement('option');
       option.value = model.name;
       option.innerText = model.name;
       selectElement.appendChild(option);
     });
-  } catch (error) {
+
+    // select option present in url parameter if present
+    const queryParams = new URLSearchParams(window.location.search);
+    const requestedModel = queryParams.get('model');
+    // update the selection based on if requestedModel is a value in options
+    if ([...selectElement.options].map(o => o.value).includes(requestedModel)) {
+      selectElement.value = requestedModel;
+    }
+    // otherwise set to the first element if exists and update URL accordingly
+    else if (selectElement.options.length) {
+      selectElement.value = selectElement.options[0].value;
+      updateModelInQueryString(selectElement.value);
+    }
+  }
+  catch (error) {
     console.error(error);
   }
+
+
 }
 
 // adjusts the padding at the bottom of scrollWrapper to be the height of the input box
