@@ -12,6 +12,8 @@ marked.use({
 
 // Fetch available models and populate the dropdown
 async function populateModels() {
+  document.getElementById('send-button').addEventListener('click', submitRequest);
+
   try {
     const response = await fetch("http://localhost:11434/api/tags");
     const data = await response.json();
