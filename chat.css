@@ -29,14 +29,21 @@ body {
     overflow: auto;
   }
   
-  #chat-history {
-    overflow-y: auto;
-  }
-
-
 .copy-button {
   position: absolute;
   bottom: 5px;
   right: 5px;
   margin: 0 5px 5px 0;
 }
+
+#scroll-wrapper {
+  padding-bottom: 5.5rem;
+}
+
+#input-area {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+

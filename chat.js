@@ -30,10 +30,64 @@ async function populateModels() {
   }
 }
 
+// adjusts the padding at the bottom of scrollWrapper to be the height of the input box
+function adjustPadding() {
+  const inputBoxHeight = document.getElementById('input-area').offsetHeight;
+  const scrollWrapper = document.getElementById('scroll-wrapper');
+  scrollWrapper.style.paddingBottom = `${inputBoxHeight + 15}px`;
+}
+
+// sets up padding resize whenever input box has its height changed
+const autoResizePadding = new ResizeObserver(() => {
+  adjustPadding();
+});
+autoResizePadding.observe(document.getElementById('input-area'));
+
+
+
 // Function to get the selected model
 function getSelectedModel() {
   return document.getElementById('model-select').value;
 }
+
+// variables to handle auto-scroll
+// we only need one ResizeObserver and isAutoScrollOn variable globally
+// no need to make a new one for every time submitRequest is called
+const scrollWrapper = document.getElementById('scroll-wrapper');
+let isAutoScrollOn = true;
+// autoscroll when new line is added
+const autoScroller = new ResizeObserver(() => {
+  if (isAutoScrollOn) {
+    scrollWrapper.scrollIntoView({behavior: "smooth", block: "end"});
+  }
+});
+
+// event listener for scrolling
+let lastKnownScrollPosition = 0;
+let ticking = false;
+document.addEventListener("scroll", (event) => {
+  // if user has scrolled up and autoScroll is on we turn it off
+  if (!ticking && isAutoScrollOn && window.scrollY < lastKnownScrollPosition) {
+    window.requestAnimationFrame(() => {
+      isAutoScrollOn = false;
+      ticking = false;
+    });
+    ticking = true;
+  }
+  // if user has scrolled nearly all the way down and autoScroll is disabled, re-enable
+  else if (!ticking && !isAutoScrollOn && 
+    window.scrollY > lastKnownScrollPosition && // make sure scroll direction is down
+    window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 30 // add 30px of space--no need to scroll all the way down, just most of the way
+  ) {
+    window.requestAnimationFrame(() => {
+      isAutoScrollOn = true;
+      ticking = false;
+    });
+    ticking = true;
+  }
+  lastKnownScrollPosition = window.scrollY;
+});
+
 
 // Function to handle the user input and call the API functions
 async function submitRequest() {
@@ -66,12 +120,17 @@ async function submitRequest() {
   let stopButton = document.createElement('button');
   stopButton.className = 'btn btn-danger';
   stopButton.innerHTML = 'Stop';
-  stopButton.onclick = () => {
+  stopButton.onclick = (e) => {
+    e.preventDefault();
     interrupt.abort('Stop button pressed');
   }
-  // add button after responseDiv
-  responseDiv.insertAdjacentElement('afterend', stopButton);
-  
+  // add button after sendButton
+  const sendButton = document.getElementById('send-button');
+  sendButton.insertAdjacentElement('beforebegin', stopButton);
+
+  // change autoScroller to keep track of our new responseDiv
+  autoScroller.observe(responseDiv);
+   
   postRequest(data, interrupt.signal)
     .then(async response => {
       await getResponse(response, parsedResponse => {
@@ -125,4 +184,7 @@ document.getElementById('user-input').addEventListener('keydown', function (e) {
 });
 
 
-window.onload = populateModels;
+window.onload = () => {
+  adjustPadding();
+  populateModels();
+}
