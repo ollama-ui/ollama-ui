@@ -67,11 +67,12 @@ async function submitRequest() {
   stopButton.onclick = () => {
     interrupt.abort('Stop button pressed');
   }
-  // add button after responseDiv
-  responseDiv.insertAdjacentElement('afterend', stopButton);
+  // add button after chatContainer
+  const chatContainer = document.getElementById('chat-container')
+  chatContainer.insertAdjacentElement('afterend', stopButton);
   // autoscroll when new line is added
   const autoScroller = new ResizeObserver(() => {
-    stopButton.scrollIntoView({behavior: "smooth", block: "end"});
+    chatHistory.scrollIntoView({behavior: "smooth", block: "end"});
   });
   autoScroller.observe(responseDiv);
 
