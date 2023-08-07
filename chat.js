@@ -10,6 +10,11 @@ marked.use({
   headerIds: false
 });
 
+function autoFocusInput() {
+  const userInput = document.getElementById('user-input');
+  userInput.focus();
+}
+
 /*
 takes in model as a string
 updates the query parameters of page url to include model name
@@ -61,8 +66,6 @@ async function populateModels() {
   catch (error) {
     console.error(error);
   }
-
-
 }
 
 // adjusts the padding at the bottom of scrollWrapper to be the height of the input box
@@ -220,6 +223,7 @@ document.getElementById('user-input').addEventListener('keydown', function (e) {
 
 
 window.onload = () => {
-  adjustPadding();
   populateModels();
+  adjustPadding();
+  autoFocusInput();
 }
