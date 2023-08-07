@@ -72,7 +72,7 @@ async function submitRequest() {
   }
   // add button after sendButton
   const sendButton = document.getElementById('send-button');
-  sendButton.insertAdjacentElement('afterend', stopButton);
+  sendButton.insertAdjacentElement('beforebegin', stopButton);
 
   const scrollWrapper = document.getElementById('scroll-wrapper');
   // autoscroll when new line is added
