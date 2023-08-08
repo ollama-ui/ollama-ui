@@ -30,6 +30,22 @@ async function populateModels() {
   }
 }
 
+// adjusts the padding at the bottom of scrollWrapper to be the height of the input box
+function adjustPadding() {
+  console.log('padding adjusted');
+  const inputBoxHeight = document.getElementById('input-area').offsetHeight;
+  const scrollWrapper = document.getElementById('scroll-wrapper');
+  scrollWrapper.style.paddingBottom = `${inputBoxHeight + 15}px`;
+}
+
+// sets up padding resize whenever input box has its height changed
+const autoResizePadding = new ResizeObserver(() => {
+  adjustPadding();
+});
+autoResizePadding.observe(document.getElementById('input-area'));
+
+
+
 // Function to get the selected model
 function getSelectedModel() {
   return document.getElementById('model-select').value;
@@ -135,4 +151,7 @@ document.getElementById('user-input').addEventListener('keydown', function (e) {
 });
 
 
-window.onload = populateModels;
+window.onload = () => {
+  adjustPadding();
+  populateModels();
+}
