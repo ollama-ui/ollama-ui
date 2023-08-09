@@ -18,8 +18,8 @@
 </head>
 
 <body class="bg-light">
-    <div class="container mt-5">
-        <div class="row">
+    <div class="container">
+        <div class="row pt-3">
             <div class="col-8">
                 <h1>Chat with Llama2</h1>
             </div>
@@ -29,16 +29,21 @@
                 <select class="form-select d-inline-block" id="model-select" style="width: auto;"></select>
             </div>
         </div>
-        <div id="chat-container" class="card">
-            <div class="card-body">
-                <div id="chat-history"></div>
+        <div id="scroll-wrapper">
+            <div id="chat-container" class="card">
+                <div class="card-body">
+                    <div id="chat-history"></div>
+                </div>
             </div>
         </div>
-        <div class="input-group mt-3" id="input-area">
+    </div>
+    <div class="container p-2 bg-light card" id="input-area">
+        <div class="input-group">
             <textarea class="form-control" id="user-input" placeholder="Type your question here..."></textarea>
             <button id="send-button" class="btn btn-primary">Send</button>
         </div>
     </div>
+
     <script src="api.js"></script>
     <script src="chat.js"></script>
 </body>
