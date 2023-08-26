@@ -10,6 +10,8 @@ body {
 	color: white;
     padding: 10px;
     border-radius: 10px;
+    margin-left: 10%;
+    white-space: pre-wrap;
      }
   
   /* Style for received messages */
@@ -20,6 +22,7 @@ body {
     border-radius: 10px;
     padding-right: 20px;
     position: relative;
+    margin-right: 10%;
   }
   
   /* Style for the chat container */
