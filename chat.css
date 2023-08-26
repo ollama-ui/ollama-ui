@@ -10,8 +10,10 @@ body {
 	color: white;
     padding: 10px;
     border-radius: 10px;
-    margin-left: 10%;
     white-space: pre-wrap;
+    margin-left: auto;
+    margin-right: 0;
+    max-width: 90%;
      }
   
   /* Style for received messages */
@@ -31,6 +33,11 @@ body {
     margin: 0 auto;
     overflow: auto;
   }
+
+#chat-history {
+    display: flex;
+    flex-direction: column;
+}
   
 .copy-button {
   position: absolute;
