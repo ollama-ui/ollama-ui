@@ -24,7 +24,8 @@ body {
     border-radius: 10px;
     padding-right: 20px;
     position: relative;
-    margin-right: 10%;
+    margin-right: auto;
+    max-width: 90%;
   }
   
   /* Style for the chat container */
