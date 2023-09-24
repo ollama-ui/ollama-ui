@@ -7,6 +7,9 @@
   "permissions": [
     "declarativeNetRequest"
   ],
+  "host_permissions": [
+    "http://localhost:11434/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },
