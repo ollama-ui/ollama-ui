@@ -44,8 +44,23 @@
         </div>
     </div>
 
-    <script src="api.js"></script>
-    <script src="chat.js"></script>
+  <div class="modal fade" id="errorModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Unable to access Ollama server</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p id="errorText"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="api.js"></script>
+  <script src="chat.js"></script>
+
 </body>
 
 </html>
