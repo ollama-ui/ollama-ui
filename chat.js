@@ -49,8 +49,7 @@ async function populateModels() {
   document.getElementById('send-button').addEventListener('click', submitRequest);
 
   try {
-    const response = await fetch("http://localhost:11434/api/tags");
-    const data = await response.json();
+    const data = await getModels();
 
     const selectElement = document.getElementById('model-select');
 

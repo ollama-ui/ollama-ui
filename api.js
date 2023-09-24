@@ -1,5 +1,18 @@
 // Base URL
-const URL = "http://localhost:11434/api/generate";
+
+var ollama_host;
+if (!ollama_host){
+  ollama_host = 'localhost:11434'
+}
+
+const URL = `http://${ollama_host}/api/generate`;
+
+async function getModels(){
+  const response = await fetch(`http://${ollama_host}/api/tags`);
+  const data = await response.json();
+  return data;
+}
+
 
 // Function to send a POST request to the API
 function postRequest(data, signal) {
@@ -41,5 +54,3 @@ async function getResponse(response, callback) {
     callback(parsedResponse);
   }
 }
-
-
