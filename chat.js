@@ -1,7 +1,9 @@
 const faqString = `
 **How can I expose the Ollama server?**
 
-By default, Ollama allows cross origin requests from 127.0.0.1 and 0.0.0.0. To support more origins, you can use the OLLAMA_ORIGINS environment variable:
+By default, Ollama allows cross origin requests from 127.0.0.1 and 0.0.0.0.
+
+To support more origins, you can use the OLLAMA_ORIGINS environment variable:
 
 \`\`\`
 OLLAMA_ORIGINS=${window.location.origin} ollama serve
@@ -43,7 +45,7 @@ function updateModelInQueryString(model) {
     window.history.replaceState(null, '', newPathWithQuery);
   }
 }
- 
+
 // Fetch available models and populate the dropdown
 async function populateModels() {
   document.getElementById('send-button').addEventListener('click', submitRequest);
@@ -132,7 +134,7 @@ document.addEventListener("scroll", (event) => {
     ticking = true;
   }
   // if user has scrolled nearly all the way down and autoScroll is disabled, re-enable
-  else if (!ticking && !isAutoScrollOn && 
+  else if (!ticking && !isAutoScrollOn &&
     window.scrollY > lastKnownScrollPosition && // make sure scroll direction is down
     window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 30 // add 30px of space--no need to scroll all the way down, just most of the way
   ) {
@@ -161,7 +163,7 @@ async function submitRequest() {
   userMessageDiv.className = 'mb-2 user-message text-end';
   userMessageDiv.innerText = input;
   chatHistory.appendChild(userMessageDiv);
-  
+
   // Create response container
   let responseDiv = document.createElement('div');
   responseDiv.className = 'response-message mb-2 text-start';
@@ -187,7 +189,7 @@ async function submitRequest() {
 
   // change autoScroller to keep track of our new responseDiv
   autoScroller.observe(responseDiv);
-   
+
   postRequest(data, interrupt.signal)
     .then(async response => {
       await getResponse(response, parsedResponse => {
@@ -220,7 +222,7 @@ async function submitRequest() {
     .then(() => {
       stopButton.remove(); // Remove stop button from DOM now that all text has been generated
       spinner.remove();
-    }) 
+    })
     .catch(error => {
       if (error !== 'Stop button pressed') {
         console.error(error);

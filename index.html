@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="chat.css">
 </head>
 
-<body class="bg-light">
+<body data-bs-theme="dark">
     <div class="container">
         <div class="row pt-3">
             <div class="col-md-8 col-12">
@@ -50,7 +50,7 @@
             </div>
         </div>
     </div>
-    <div class="container p-2 bg-light card" id="input-area">
+    <div class="container p-2 card" id="input-area">
         <div class="input-group">
             <textarea class="form-control" id="user-input" placeholder="Type your question here..."></textarea>
             <button id="send-button" class="btn btn-primary">Send</button>
@@ -77,7 +77,7 @@
   </div>
 
   <div class="modal fade" id="errorModal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Unable to access Ollama server</h5>
