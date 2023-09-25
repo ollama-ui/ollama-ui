@@ -249,7 +249,7 @@ window.onload = () => {
   adjustPadding();
   autoFocusInput();
 
-  document.getElementById("delect-chat").addEventListener("click", deleteChat);
+  document.getElementById("delete-chat").addEventListener("click", deleteChat);
   document.getElementById("saveName").addEventListener("click", saveChat);
   document.getElementById("chat-select").addEventListener("change", loadSelectedChat);
   document.getElementById("host-address").addEventListener("change", setHostAddress);
