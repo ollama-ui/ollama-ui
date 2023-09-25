@@ -8,9 +8,9 @@ https://chrome.google.com/webstore/detail/ollama-ui/cmgdpmlhgjhoadnonobjeekmfceh
 ## Usage
 
 ```
-git clone git@github.com:rtcfirefly/ollama-ui.git
+git clone https://github.com/ollama-ui/ollama-ui
 cd ollama-ui
-python3 -m http.server
+make
 
 open http://localhost:8000 # in browser
 ```

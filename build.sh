@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./fetch_resources.sh
+make download_resources
 
 OUTPUT_ZIP="ollama-ui.zip"
 

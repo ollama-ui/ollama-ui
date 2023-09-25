@@ -1,3 +1,19 @@
+const faqString = `
+**How can I expose the Ollama server?**
+
+By default, Ollama allows cross origin requests from 127.0.0.1 and 0.0.0.0.
+
+To support more origins, you can use the OLLAMA_ORIGINS environment variable:
+
+\`\`\`
+OLLAMA_ORIGINS=${window.location.origin} ollama serve
+\`\`\`
+
+Also see: https://github.com/jmorganca/ollama/blob/main/docs/faq.md
+`;
+
+
+
 const clipboardIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
 <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
 <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
@@ -29,14 +45,13 @@ function updateModelInQueryString(model) {
     window.history.replaceState(null, '', newPathWithQuery);
   }
 }
- 
+
 // Fetch available models and populate the dropdown
 async function populateModels() {
   document.getElementById('send-button').addEventListener('click', submitRequest);
 
   try {
-    const response = await fetch("http://localhost:11434/api/tags");
-    const data = await response.json();
+    const data = await getModels();
 
     const selectElement = document.getElementById('model-select');
 
@@ -64,7 +79,13 @@ async function populateModels() {
     }
   }
   catch (error) {
-    console.error(error);
+    document.getElementById('errorText').innerHTML =
+    DOMPurify.sanitize(marked.parse(
+    `Ollama-ui was unable to communitcate with Ollama due to the following error:\n\n`
+    + `\`\`\`${error.message}\`\`\`\n\n---------------------\n`
+    + faqString));
+    let modal = new bootstrap.Modal(document.getElementById('errorModal'));
+    modal.show();
   }
 }
 
@@ -113,7 +134,7 @@ document.addEventListener("scroll", (event) => {
     ticking = true;
   }
   // if user has scrolled nearly all the way down and autoScroll is disabled, re-enable
-  else if (!ticking && !isAutoScrollOn && 
+  else if (!ticking && !isAutoScrollOn &&
     window.scrollY > lastKnownScrollPosition && // make sure scroll direction is down
     window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 30 // add 30px of space--no need to scroll all the way down, just most of the way
   ) {
@@ -142,7 +163,7 @@ async function submitRequest() {
   userMessageDiv.className = 'mb-2 user-message';
   userMessageDiv.innerText = input;
   chatHistory.appendChild(userMessageDiv);
-  
+
   // Create response container
   let responseDiv = document.createElement('div');
   responseDiv.className = 'response-message mb-2 text-start';
@@ -168,7 +189,7 @@ async function submitRequest() {
 
   // change autoScroller to keep track of our new responseDiv
   autoScroller.observe(responseDiv);
-   
+
   postRequest(data, interrupt.signal)
     .then(async response => {
       await getResponse(response, parsedResponse => {
@@ -201,7 +222,7 @@ async function submitRequest() {
     .then(() => {
       stopButton.remove(); // Remove stop button from DOM now that all text has been generated
       spinner.remove();
-    }) 
+    })
     .catch(error => {
       if (error !== 'Stop button pressed') {
         console.error(error);
@@ -223,7 +244,59 @@ document.getElementById('user-input').addEventListener('keydown', function (e) {
 
 
 window.onload = () => {
+  updateChatList();
   populateModels();
   adjustPadding();
   autoFocusInput();
+
+  document.getElementById("delect-chat").addEventListener("click", deleteChat);
+  document.getElementById("saveName").addEventListener("click", saveChat);
+  document.getElementById("chat-select").addEventListener("change", loadSelectedChat);
+  document.getElementById("host-address").addEventListener("change", setHostAddress);
+}
+
+function deleteChat() {
+  const selectedChat = document.getElementById("chat-select").value;
+  localStorage.removeItem(selectedChat);
+  updateChatList();
+}
+
+// Function to save chat with a unique name
+function saveChat() {
+  const chatName = document.getElementById('userName').value;
+
+  // Close the modal
+  const bootstrapModal = bootstrap.Modal.getInstance(document.getElementById('nameModal'));
+  bootstrapModal.hide();
+
+  if (chatName === null || chatName.trim() === "") return;
+  const history = document.getElementById("chat-history").innerHTML;
+  const context = document.getElementById('chat-history').context;
+  const model = getSelectedModel();
+  localStorage.setItem(chatName, JSON.stringify({"history":history, "context":context, "model": model}));
+  updateChatList();
+}
+
+// Function to load selected chat from dropdown
+function loadSelectedChat() {
+  const selectedChat = document.getElementById("chat-select").value;
+  const obj = JSON.parse(localStorage.getItem(selectedChat));
+  document.getElementById("chat-history").innerHTML = obj.history;
+  document.getElementById("chat-history").context = obj.context;
+  updateModelInQueryString(obj.model)
+  document.getElementById('chat-container').style.display = 'block';
+}
+
+// Function to update chat list dropdown
+function updateChatList() {
+  const chatList = document.getElementById("chat-select");
+  chatList.innerHTML = '<option value="" disabled selected>Select a chat</option>';
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key === "host-address") continue;
+    const option = document.createElement("option");
+    option.value = key;
+    option.text = key;
+    chatList.add(option);
+  }
 }
