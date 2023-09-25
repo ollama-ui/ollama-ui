@@ -28,6 +28,11 @@ body {
     max-width: 90%;
   }
 
+  .response-message p {
+    margin-right: 40px;
+    /* Add more styles here */
+  }
+
   /* Style for the chat container */
   #chat-container {
     display: none;
