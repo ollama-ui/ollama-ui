@@ -10,6 +10,10 @@ body {
 	color: white;
     padding: 10px;
     border-radius: 10px;
+    white-space: pre-wrap;
+    margin-left: auto;
+    margin-right: 0;
+    max-width: 90%;
      }
 
   /* Style for received messages */
@@ -20,6 +24,8 @@ body {
     border-radius: 10px;
     padding-right: 20px;
     position: relative;
+    margin-right: auto;
+    max-width: 90%;
   }
 
   /* Style for the chat container */
@@ -34,6 +40,11 @@ body {
 	color: white;
     padding: 1000px;
     border-radius: 1000px;
+}
+
+#chat-history {
+    display: flex;
+    flex-direction: column;
 }
 
 .copy-button {

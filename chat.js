@@ -160,7 +160,7 @@ async function submitRequest() {
   // Create user message element and append to chat history
   let chatHistory = document.getElementById('chat-history');
   let userMessageDiv = document.createElement('div');
-  userMessageDiv.className = 'mb-2 user-message text-end';
+  userMessageDiv.className = 'mb-2 user-message';
   userMessageDiv.innerText = input;
   chatHistory.appendChild(userMessageDiv);
 
@@ -300,3 +300,4 @@ function updateChatList() {
     chatList.add(option);
   }
 }
+
