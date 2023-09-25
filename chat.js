@@ -9,7 +9,7 @@ To support more origins, you can use the OLLAMA_ORIGINS environment variable:
 OLLAMA_ORIGINS=${window.location.origin} ollama serve
 \`\`\`
 
-Also see: https://raw.githubusercontent.com/jmorganca/ollama/main/docs/faq.md
+Also see: https://github.com/jmorganca/ollama/blob/main/docs/faq.md
 `;
 
 
@@ -249,8 +249,10 @@ window.onload = () => {
   adjustPadding();
   autoFocusInput();
 
+  document.getElementById("delect-chat").addEventListener("click", deleteChat);
   document.getElementById("saveName").addEventListener("click", saveChat);
   document.getElementById("chat-select").addEventListener("change", loadSelectedChat);
+  document.getElementById("host-address").addEventListener("change", setHostAddress);
 }
 
 function deleteChat() {
@@ -291,7 +293,7 @@ function updateChatList() {
   chatList.innerHTML = '<option value="" disabled selected>Select a chat</option>';
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (key === "chatHistory") continue;
+    if (key === "host-address") continue;
     const option = document.createElement("option");
     option.value = key;
     option.text = key;

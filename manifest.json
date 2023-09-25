@@ -2,13 +2,14 @@
   "manifest_version": 3,
   "name": "ollama-ui",
   "description": "This extension hosts an ollama-ui web server on localhost",
-  "version": "1.0",
+  "version": "1.4",
   "action": {},
   "permissions": [
     "declarativeNetRequest"
   ],
   "host_permissions": [
-    "http://localhost:11434/*"
+    "http://*:11434/api/tags",
+    "http://*:11434/api/generate"
   ],
   "background": {
     "service_worker": "background.js"

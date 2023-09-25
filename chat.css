@@ -29,6 +29,13 @@ body {
     overflow: auto;
   }
 
+.host-address-select {
+  background-color: red;
+	color: white;
+    padding: 1000px;
+    border-radius: 1000px;
+}
+
 .copy-button {
   position: absolute;
   bottom: 5px;
