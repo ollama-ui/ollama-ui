@@ -32,9 +32,10 @@ if (!ollama_host){
   ollama_host = 'localhost'
 } else {
   document.getElementById("host-address").value = ollama_host;
-  if (rebuildRules){
-    rebuildRules(ollama_host);
-  }
+}
+
+if (rebuildRules){
+  rebuildRules(ollama_host);
 }
 
 function setHostAddress(){
