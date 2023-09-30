@@ -15,5 +15,6 @@ make
 open http://localhost:8000 # in browser
 ```
 
-![screenshot](/screenshot.png?raw=true)
+![screenshot1](/screenshot1.jpg?raw=true)
 
+![screenshot2](/screenshot2.jpg?raw=true)
