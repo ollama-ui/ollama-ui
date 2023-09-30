@@ -301,3 +301,24 @@ function updateChatList() {
   }
 }
 
+function autoGrow(element) {
+    const baseHeight = 40;  // This should match the default height set in CSS
+    const maxHeight = 200;  // This should match the max-height set in CSS
+
+    // Count the number of lines in the textarea based on newline characters
+    const numberOfLines = $(element).val().split('\n').length;
+
+    // Temporarily reset the height to auto to get the actual scrollHeight
+    $(element).css("height", "auto");
+    
+    let newHeight = element.scrollHeight;
+
+    // If content is one line, set the height to baseHeight
+    if (numberOfLines === 1) {
+        newHeight = baseHeight;
+    } else if (newHeight > maxHeight) {
+        newHeight = maxHeight;
+    }
+
+    $(element).css("height", newHeight + "px");
+}

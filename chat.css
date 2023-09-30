@@ -60,6 +60,7 @@ body {
 }
 
 #scroll-wrapper {
+  padding-top: 80px;
   padding-bottom: 5.5rem;
 }
 
@@ -70,3 +71,9 @@ body {
   transform: translateX(-50%);
 }
 
+#user-input {
+  overflow-y: hidden;   /* Hide vertical scrollbar */
+  resize: none;         /* Prevent user from manually resizing */
+  height: 40px;
+  max-height: 200px;    /* Set your desired max height here */
+}
