@@ -72,7 +72,7 @@ body {
 }
 
 #user-input {
-  overflow-y: hidden;   /* Hide vertical scrollbar */
+  overflow-y: auto;
   resize: none;         /* Prevent user from manually resizing */
   height: 40px;
   max-height: 200px;    /* Set your desired max height here */
