@@ -250,6 +250,7 @@ window.onload = () => {
   autoFocusInput();
 
   document.getElementById("delete-chat").addEventListener("click", deleteChat);
+  document.getElementById("new-chat").addEventListener("click", startNewChat);
   document.getElementById("saveName").addEventListener("click", saveChat);
   document.getElementById("chat-select").addEventListener("change", loadSelectedChat);
   document.getElementById("host-address").addEventListener("change", setHostAddress);
@@ -285,6 +286,13 @@ function loadSelectedChat() {
   document.getElementById("chat-history").context = obj.context;
   updateModelInQueryString(obj.model)
   document.getElementById('chat-container').style.display = 'block';
+}
+
+function startNewChat() {
+    document.getElementById("chat-history").innerHTML = null;
+    document.getElementById("chat-history").context = null;
+    document.getElementById('chat-container').style.display = 'none';
+    updateChatList();
 }
 
 // Function to update chat list dropdown

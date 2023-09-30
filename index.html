@@ -36,13 +36,14 @@
                 <!-- Model dropdown -->
                 <div class="d-flex justify-content-end align-items-center m-0">
                     <label for="model-select" class="me-2" style="font-size: normal;">Model:</label>
-                    <select class="form-select me-3" id="model-select" style="width: auto;"></select>
+                    <select class="form-select me-5" id="model-select" style="width: auto;"></select>
+                    <button id="new-chat" class="btn btn-dark me-4" type="button">Reset chat</button>
                     <label for="chat-select" class="me-2" style="font-size: normal;">History:</label>
                     <select id="chat-select" class="form-select me-2" style="width: auto;">
                         <option value="" disabled selected>Select a chat</option>
                     </select>
-                    <button id="delete-chat" class="btn btn-danger me-2" type="button">Delete Chat</button>
-                    <button id="save-chat" class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#nameModal">Save Chat</button>
+                    <button id="save-chat" class="btn btn-secondary me-2" type="button" data-bs-toggle="modal" data-bs-target="#nameModal">Save</button>
+                    <button id="delete-chat" class="btn btn-danger" type="button">Delete</button>
                 </div>
             </div>
         </div>
