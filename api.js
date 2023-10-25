@@ -1,8 +1,6 @@
 var rebuildRules = undefined;
 if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
-  // Running in extension
-  document.getElementById('host-address-select').style.display = 'block';
-  rebuildRules = async function (domain) {
+    rebuildRules = async function (domain) {
     const domains = [domain];
     /** @type {chrome.declarativeNetRequest.Rule[]} */
     const rules = [{
@@ -29,7 +27,7 @@ if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
 
 var ollama_host = localStorage.getItem("host-address");
 if (!ollama_host){
-  ollama_host = 'localhost'
+  ollama_host = 'http://localhost:11434'
 } else {
   document.getElementById("host-address").value = ollama_host;
 }
@@ -47,10 +45,10 @@ function setHostAddress(){
   }
 }
 
-const URL = `http://${ollama_host}:11434/api/generate`;
+
 
 async function getModels(){
-  const response = await fetch(`http://${ollama_host}:11434/api/tags`);
+  const response = await fetch(`${ollama_host}/api/tags`);
   const data = await response.json();
   return data;
 }
@@ -58,6 +56,7 @@ async function getModels(){
 
 // Function to send a POST request to the API
 function postRequest(data, signal) {
+  const URL = `${ollama_host}/api/generate`;
   return fetch(URL, {
     method: 'POST',
     headers: {

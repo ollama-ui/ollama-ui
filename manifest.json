@@ -9,7 +9,9 @@
   ],
   "host_permissions": [
     "http://*:11434/api/tags",
-    "http://*:11434/api/generate"
+    "http://*:11434/api/generate",
+    "https://*:11434/api/tags",
+    "https://*:11434/api/generate"
   ],
   "background": {
     "service_worker": "background.js"
