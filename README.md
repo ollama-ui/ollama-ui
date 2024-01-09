@@ -17,3 +17,10 @@ open http://localhost:8000 # in browser
 
 ![screenshot](/screenshot.png?raw=true)
 
+## Quickstart with docker
+
+```shell
+docker run -d -p 8000:8000 hidayathamir/ollama-ui
+```
+
+open http://localhost:8000 in browser.
