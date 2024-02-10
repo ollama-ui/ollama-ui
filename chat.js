@@ -301,3 +301,9 @@ function updateChatList() {
   }
 }
 
+document.getElementById('user-input').addEventListener('keydown', function(event) {
+  if (event.key === "Enter") {
+      document.getElementById('send-button').click();
+  }
+});
+
