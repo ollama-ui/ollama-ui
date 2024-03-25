@@ -1,4 +1,4 @@
-.PHONY: default download_resources web_server ollama_server
+.PHONY: default download_resources web_server ollama_server clean
 
 # Default task that downloads the assets and starts the ollama and web server
 default: download_resources
@@ -6,15 +6,18 @@ default: download_resources
 
 # Web Server
 web_server:
-	python3 -m http.server --bind 127.0.0.1
+	@python -m http.server --bind 127.0.0.1
 
-# Web Server
+# Ollama Server
 ollama_server:
-	ollama serve
+	@ollama serve
 
 # Task to download resources
 download_resources:
-	# Check if resources directory exists, if not create it
+ifeq ($(OS),Windows_NT)
+	@powershell -File download_resources.ps1
+	@powershell -File check_hashes.ps1
+else
 	@if [ ! -d "resources" ]; then \
 		mkdir -p ./resources/ && \
 		cd ./resources/ && \
@@ -23,8 +26,12 @@ download_resources:
 		curl -O https://cdn.jsdelivr.net/npm/marked@6.0.0/marked.min.js && \
 		curl -O https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js; \
 	fi
-	# Check SHA-256 hash
 	@shasum -a 256 -c resources.hash || exit 1
+endif
 
 clean:
+ifeq ($(OS),Windows_NT)
+	@powershell -Command "Remove-Item -Recurse -Force resources"
+else
 	@rm -rf ./resources
+endif
