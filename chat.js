@@ -148,6 +148,20 @@ document.addEventListener("scroll", (event) => {
   lastKnownScrollPosition = window.scrollY;
 });
 
+function removeBetween(arr, startVal, endVal) {
+  if (typeof arr === "undefined" || !Array.isArray(arr)) {
+    return arr;
+  }
+  const startIndex = arr.indexOf(startVal);
+  const endIndex = arr.indexOf(endVal);
+  
+  if (startIndex === -1 || endIndex === -1 || startIndex >= endIndex) {
+    return arr; 
+  }
+  
+  arr.splice(startIndex, endIndex - startIndex + 1);
+  return arr;
+}
 
 // Function to handle the user input and call the API functions
 async function submitRequest() {
@@ -157,7 +171,7 @@ async function submitRequest() {
   const selectedModel = getSelectedModel();
   const context = document.getElementById('chat-history').context;
   const systemPrompt = document.getElementById('system-prompt').value;
-  const data = { model: selectedModel, prompt: input, context: context, system: systemPrompt };
+  const data = { model: selectedModel, prompt: input, context: removeBetween(context, 151648, 151649), system: systemPrompt };
 
   // Create user message element and append to chat history
   let chatHistory = document.getElementById('chat-history');
@@ -216,6 +230,7 @@ async function submitRequest() {
           if (responseDiv.hidden_text == undefined){
             responseDiv.hidden_text = "";
           }
+          word = word.replace(/<think>/g, '<details open><summary>think content</summary><br><span style="color:gray;">').replace(/<\/think>/g, '</span><hr></details>');
           responseDiv.hidden_text += word;
           responseDiv.innerHTML = DOMPurify.sanitize(marked.parse(responseDiv.hidden_text)); // Append word to response container
         }
