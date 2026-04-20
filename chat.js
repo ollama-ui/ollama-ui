@@ -360,10 +360,24 @@ async function submitRequest() {
   clearAttachments();
 }
 
-// Event listener for Ctrl + Enter or CMD + Enter
-document.getElementById('user-input').addEventListener('keydown', function (e) {
+function getUserMessagesFromHistory() {
+  const UserMessageElements = document.querySelectorAll('#chat-history .user-message');
+  return Array.from(UserMessageElements).map(e => e.innerText);
+}
+
+// Event listener for user input
+document.getElementById('user-input').addEventListener('keydown', async (e) => {
+  // Event listener for Ctrl + Enter or CMD + Enter to submit the request
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-    submitRequest();
+    await submitRequest();
+  }
+
+  // When the user presses the arrow up key, and no text has been entered, populate the input with the last user message
+  if (e.key === 'ArrowUp' && e.target.value === '') {
+    const lastUserMessage = getUserMessagesFromHistory().pop();
+    if (lastUserMessage) {
+      e.target.value = lastUserMessage;
+    }
   }
 });
 
