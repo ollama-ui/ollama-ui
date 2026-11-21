@@ -25,6 +25,12 @@ if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
 }
 
 
+const supportedCredentialsModes = ['omit', 'same-origin', 'include'];
+const configuredCredentialsMode = window.OLLAMA_UI_CONFIG && window.OLLAMA_UI_CONFIG.credentialsMode;
+const credentialsMode = supportedCredentialsModes.includes(configuredCredentialsMode)
+  ? configuredCredentialsMode
+  : 'omit';
+
 var ollama_host = localStorage.getItem("host-address");
 if (!ollama_host){
   ollama_host = 'http://localhost:11434'
@@ -55,10 +61,8 @@ function setSystemPrompt(){
   localStorage.setItem("system-prompt", systemPrompt);
 }
 
-
-
 async function getModels(){
-  const response = await fetch(`${ollama_host}/api/tags`, {credentials: 'include'});
+  const response = await fetch(`${ollama_host}/api/tags`, {credentials: credentialsMode});
   const data = await response.json();
   return data;
 }
@@ -74,7 +78,7 @@ function postRequest(data, signal) {
     },
     body: JSON.stringify(data),
     signal: signal,
-    credentials: 'include',
+    credentials: credentialsMode,
   });
 }
 
