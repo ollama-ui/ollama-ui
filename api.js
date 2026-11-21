@@ -27,9 +27,16 @@ if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
 
 const supportedCredentialsModes = ['omit', 'same-origin', 'include'];
 const configuredCredentialsMode = window.OLLAMA_UI_CONFIG && window.OLLAMA_UI_CONFIG.credentialsMode;
-const credentialsMode = supportedCredentialsModes.includes(configuredCredentialsMode)
+const defaultCredentialsMode = supportedCredentialsModes.includes(configuredCredentialsMode)
   ? configuredCredentialsMode
   : 'omit';
+
+function getCredentialsMode() {
+  const storedMode = localStorage.getItem("credentials-mode");
+  return supportedCredentialsModes.includes(storedMode) ? storedMode : defaultCredentialsMode;
+}
+
+var credentialsMode = getCredentialsMode();
 
 var ollama_host = localStorage.getItem("host-address");
 if (!ollama_host){
@@ -42,6 +49,8 @@ const ollama_system_prompt = localStorage.getItem("system-prompt");
 if (ollama_system_prompt){
   document.getElementById("system-prompt").value = ollama_system_prompt;
 }
+
+document.getElementById("credentials-mode").value = credentialsMode;
 
 if (rebuildRules){
   rebuildRules(ollama_host);
@@ -59,6 +68,13 @@ function setHostAddress(){
 function setSystemPrompt(){
   const systemPrompt = document.getElementById("system-prompt").value;
   localStorage.setItem("system-prompt", systemPrompt);
+}
+
+function setCredentialsMode(){
+  const newMode = document.getElementById("credentials-mode").value;
+  if (!supportedCredentialsModes.includes(newMode)) return;
+  credentialsMode = newMode;
+  localStorage.setItem("credentials-mode", credentialsMode);
 }
 
 async function getModels(){

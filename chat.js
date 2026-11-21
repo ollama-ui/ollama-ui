@@ -49,12 +49,11 @@ function updateModelInQueryString(model) {
 
 // Fetch available models and populate the dropdown
 async function populateModels() {
-  document.getElementById('send-button').addEventListener('click', submitRequest);
+  const selectElement = document.getElementById('model-select');
+  selectElement.innerHTML = '';
 
   try {
     const data = await getModels();
-
-    const selectElement = document.getElementById('model-select');
 
     // set up handler for selection
     selectElement.onchange = (() => updateModelInQueryString(selectElement.value));
@@ -523,12 +522,20 @@ window.onload = () => {
   autoFocusInput();
   initializeFileHandlers();
 
+  document.getElementById("send-button").addEventListener("click", submitRequest);
   document.getElementById("delete-chat").addEventListener("click", deleteChat);
   document.getElementById("new-chat").addEventListener("click", startNewChat);
   document.getElementById("saveName").addEventListener("click", saveChat);
   document.getElementById("chat-select").addEventListener("change", loadSelectedChat);
   document.getElementById("host-address").addEventListener("change", setHostAddress);
   document.getElementById("system-prompt").addEventListener("change", setSystemPrompt);
+  document.getElementById("settingsModal").addEventListener("show.bs.modal", () => {
+    document.getElementById("credentials-mode").value = credentialsMode;
+  });
+  document.getElementById("save-settings").addEventListener("click", () => {
+    setCredentialsMode();
+    populateModels();
+  });
 }
 
 function deleteChat() {
@@ -625,7 +632,7 @@ function updateChatList() {
   chatList.appendChild(defaultOption);
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (key === "host-address" || key == "system-prompt") continue;
+    if (key === "host-address" || key == "system-prompt" || key === "credentials-mode") continue;
     const option = document.createElement("option");
     option.value = key;
     option.text = key;
